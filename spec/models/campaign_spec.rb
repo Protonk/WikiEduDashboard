@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: campaigns
@@ -46,6 +47,7 @@ describe Campaign do
     it { should have_many(:campaigns_users) }
     it { should have_many(:question_group_conditionals) }
     it { should have_many(:rapidfire_question_groups).through(:question_group_conditionals) }
+    it { should have_many(:articles_courses) }
   end
 
   describe 'active campaign' do
@@ -74,9 +76,14 @@ describe Campaign do
   end
 
   describe 'slug' do
-    it 'should create a slug for the campaign based on the title' do
+    it 'creates a slug for the campaign based on the title' do
       campaign = Campaign.create(title: 'My awesome 2016 campaign')
       expect(campaign.slug).to eq('my_awesome_2016_campaign')
+    end
+    it 'handles non-ascii campaign titles' do
+      title = 'Карыстальнік Група Беларусь 2016'
+      campaign = Campaign.create(title: title)
+      expect(campaign.slug).to eq('карыстальнік_група_беларусь_2016')
     end
   end
 

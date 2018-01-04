@@ -8,7 +8,9 @@
 # Author: Liuxinyu970226
 # Author: Macofe
 # Author: MojoMann
+# Author: Nemo bis
 # Author: Ragesoss
+# Author: Raymond
 # Author: Robby
 # Author: Vojtěch Dostál
 ---
@@ -21,6 +23,7 @@ qqq:
       Button to cancel an action
       {{Identical|Cancel}}
     dashboard: Application name.
+    documentation: '{{Identical|Documentation}}'
     error: Label for error messages
     explore: |-
       Explore link
@@ -146,7 +149,8 @@ qqq:
       stub: Explanation of what a Stub-class article is
       list: Explanation of what a List-class page is
       '?': Explanation of what an unrated article is
-      does_not_exist: Explanation of the Ø  symbol, which indicates than the article does not exist on Wikipedia
+      does_not_exist: Explanation of the Ø  symbol, which indicates than the article
+        does not exist on Wikipedia
     title: |-
       Label for an article title.
       {{Identical|Title}}
@@ -162,6 +166,8 @@ qqq:
       when page view data is being imported.)
   assignments:
     already_exists: Message displayed when trying to create a duplicate assignment
+    title_too_large: Message displayed when title entered exceeds 255 characters to
+      prevent mysql error
     assignees: '{{Identical|Assignee}}'
     assign_other: Button to assign an article to a student
     add_available: Button to add an article title to the list of articles available
@@ -195,7 +201,6 @@ qqq:
     milestones:
       title: Label for the Milestone section of a course page (Wiki Ed only)
   campaign:
-    active_campaign: Heading for the list of active campaigns
     add_organizer: Button to add an organizer
     all_campaigns: Button to view the list of all campaigns
     already_exists: Error shown when a new campaign has the same name or slug of another
@@ -212,6 +217,10 @@ qqq:
     campaign_updated: Message indicating a campaign was successfully updated
     confirm_campaign_deletion: Confirmation dialog for deleting a campaign
     confirm_campaign_deletion_failed: Message indicating that a campaign was not deleted
+    confirm_course_removal: |-
+      Confirmation dialog for removing a course from a campaign.
+      'title' is the title of the course, and 'campaign_title' is the title of the campaign.
+    course_removed: Message indicating a course was successfully removed from a campaign.
     create_campaign: Header for the page to create a new campaign
     create_my_campaign: Label for the button to create a new campaign
     description: |-
@@ -228,9 +237,6 @@ qqq:
       of a campaign
     organizer_removed: Message indicating a user was successfully removed as an organizer
       of a campaign
-    programs: |-
-      The title of a campaign followed by an identical translation for 'Programs'
-      {{Identical|Program}}
     program_template: |-
       Label for the field to enter a default description for a program.
       A direct translation of 'Program template' should be suitable.
@@ -240,6 +246,15 @@ qqq:
       Label for the input to change the title of a campaign
       {{Identical|Title}}
     use_start_end_dates: Label for checkbox to enable start and end dates for a campaign
+  categories:
+    name: '{{Identical|Name}}'
+    category_name: '{{Identical|Category name}}'
+    template_name: '{{Identical|Template name}}'
+    remove: '{{Identical|Remove}}'
+  chat:
+    label: |-
+      Short label for chat / discussion channel
+      {{Identical|Chat}}
   courses:
     activity: Label for link to the 'recent activity' list for a course
     active_courses: |-
@@ -278,12 +293,17 @@ qqq:
     campaigns: |-
       Label for a list of campaigns a program is part of. A "campaign" essentially means a group of courses with something in common, in this context.
       {{Identical|Campaign}}
+    campaign_courses: |-
+      The title of a campaign followed by an identical translation for 'Programs'
+      {{Identical|Course}}
     confirm_course_deletion: Confirmation dialog for deleting a course
     confirm_course_deletion_failed: Message indicating that a course was not deleted
     course_description: |-
       Label for the number of courses in a campaign
       {{Identical|Course}}
-    courses: Label for the number of courses in a campaign
+    courses: |-
+      Label for the number of courses in a campaign
+      {{Identical|Course}}
     creation_date: Data de criação
     creator:
       already_exists: Message indicating that a course with the same details already
@@ -333,6 +353,7 @@ qqq:
         {{Identical|Subject}}
     current: Label for the list of current courses
     delete_course: Button to delete a course
+    delete_suggestion: '{{Identical|Delete}}'
     dismiss_survey: |-
       Button label for dismissing a survey notification (Wiki Ed only)
       {{Identical|Dismiss}}
@@ -348,6 +369,9 @@ qqq:
       user_exists: Error message indicating an invalid Wikimedia username
       invalid_language_or_project: Error message indicating the language and project
         do not correspond to a valid wiki
+      invalid_slug: Error message indicating blank school/title in course slug.
+      duplicate_slug: Error message indicating duplicate course slug.
+    feedback: '{{Identical|Feedback}}'
     gradeables_none: Message indicating that the course has no gradeable items in
       the timeline (Wiki Ed only)
     instructor:
@@ -384,7 +408,9 @@ qqq:
     notify_untrained_confirmation: Confirmation message explaning that talk page notification
       will be posted. (Wiki Ed only)
     no_available_actions: Placeholder message when no action buttons are available
-    overview: Label for link to the overview page for a course
+    overview: |-
+      Label for link to the overview page for a course
+      {{Identical|Home}}
     passcode: |-
       Label for course passcode field
       {{Identical|Passcode}}
@@ -451,17 +477,28 @@ qqq:
         only)
       link: Link to begin course survey (Wiki Ed only)
   courses_generic:
+    all_courses: |-
+      Button to view the list of all courses. Uses alternative word for generic courses.
+      {{Identical|Programs}}
+    archived: |-
+      The alternative wording for generic courses.
+      {{Identical|Archived Programs}}
     articles_none: Message indicating that no articles have been edited
     assignments_none: Message indicating that there are no assigned articles
     cancel: '{{Identical|Cancel}}'
     courses: '{{Identical|Program}}'
     campaigns: '{{Identical|Campaign}}'
+    campaign_courses: |-
+      The title of a campaign followed by an identical translation for 'Programs'
+      {{Identical|Program}}
     creator:
       checking_for_uniqueness: Status message while course data is being validated
       course_description: Label for the description of a course
       course_school: Label for the "Institution" input field of a program, which is
         for the name of the institution — such as a university or Wikimedia chapter
         — that the program is associated with.
+      course_term: '{{Identical|When}}'
+      course_term_placeholder: '{{Identical|When}}'
       course_title: Label for the name of a course or program
       create_button: Button to submit a new program
       create_label: Label for creating a new program
@@ -469,6 +506,7 @@ qqq:
       create_short: Short version of link to start a new program
       find: Button to find an existing program
       intro: Explanation of how to use the program creation form
+      save_cloned_course: '{{Identical|Save}}'
     explore: |-
       The alternative wording for generic courses.
       {{Identical|Find programs}}
@@ -484,6 +522,9 @@ qqq:
       Alternative wording for generic courses.
       {{Identical|Unsubmitted Programs}}
     uploads_none: Message indicating that there are no Commons contributions to show
+    yourcourses: |-
+      The alternative wording for generic courses.
+      {{Identical|Your Programs}}
   editable:
     edit: |-
       Label for an edit button
@@ -511,12 +552,14 @@ qqq:
     per_user: The average number of words contributed to articles per user, for a
       program. 'number' is a number of words.
     revisions: Label for the number of recent edits/revisions.
+    tags: '{{Identical|Tag}}'
     upload_count: Label for the number of files uploaded to Wikimedia Commons
     uploads_in_use_count: Label for the number of Wikimedia Commons files being used
       in articles. Preceded by %{count}.
     upload_usages_count: Label for the number of times Wikimedia Commons files are
       used across all languages and projects. Preceded by %{count}.
-    view_count_description: Long label for the number of article views.
+    view_count_description: Long label for the number of views for the article or
+      articles involved.
     view: Label for the number of article views.
   namespace:
     main: Long label for the Main namespace.
@@ -562,7 +605,9 @@ qqq:
     diff: '{{Identical|Diff}}'
     diff_show: '{{Identical|Show}}'
     diff_hide: '{{Identical|Hide}}'
+    edit_time_span: Message with start and end datetimes for edits to article
     edited_by: Label for author of the last edition
+    edited_on: Label with datetime of edit to article
     loading: Message about loading revisions
     none: Message stating there's no editing activity
     time_doc: Explanation of what 'time' means
@@ -623,7 +668,9 @@ qqq:
     characters_added_userspace: '"US" means User Space'
     my_assigned: Label for a list of article assignments.
     my_reviewing: Label for a list of articles to review.
-    name: Label for usernames of students
+    name: |-
+      Label for usernames of students
+      {{Identical|Name}}
     none: Message indicating that a course has no students enrolled
     no_articles: Label for an empty assignments list.
     number_of_articles: |-

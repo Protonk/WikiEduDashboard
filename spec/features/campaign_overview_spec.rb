@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require 'rails_helper'
 
 campaign_course_count = 10
@@ -14,8 +15,7 @@ describe 'campaign overview page', type: :feature, js: true do
   let(:user)  { create(:user) }
   let(:campaign) do
     create(:campaign,
-           id: 10001,
-           title: 'My awesome Spring 2016 campaign',
+           title: 'Spring 2016 campaign',
            slug: slug,
            description: 'This is the best campaign')
   end
@@ -41,7 +41,7 @@ describe 'campaign overview page', type: :feature, js: true do
         course2.campaigns << campaign_two
 
         # STUDENTS, one per course
-        create(:user, id: i, trained: true)
+        create(:user, username: "user#{i}", id: i, trained: true)
         create(:courses_user,
                id: i,
                course_id: i,
@@ -49,7 +49,7 @@ describe 'campaign overview page', type: :feature, js: true do
                role: CoursesUsers::Roles::STUDENT_ROLE)
 
         # INSTRUCTORS, one per course
-        create(:user, id: i + campaign_course_count, trained: true)
+        create(:user, username: "instructor#{i}", id: i + campaign_course_count, trained: true)
         create(:courses_user,
                id: i + campaign_course_count,
                course_id: i,
@@ -83,13 +83,13 @@ describe 'campaign overview page', type: :feature, js: true do
       visit "/campaigns/#{campaign.slug}/overview"
 
       # Number of courses
-      course_count = Campaign.first.courses.count
+      course_count = Campaign.find(campaign.id).courses.count
       stat_text = "#{course_count} #{I18n.t('courses.course_description')}"
       expect(page.find('.stat-display')).to have_content stat_text
 
       # Number of students
-      # one non-instructor student per course
-      student_count = campaign_course_count
+      # one non-instructor student per course and one instructor-student per course
+      student_count = campaign_course_count * 2
       stat_text = "#{student_count} #{I18n.t('courses.students')}"
       expect(page.find('.stat-display')).to have_content stat_text
 
@@ -114,7 +114,7 @@ describe 'campaign overview page', type: :feature, js: true do
 
       it 'falls back when locale is not available' do
         visit "/campaigns/#{campaign.slug}/overview?locale=aa"
-        expect(page.find('.stat-display')).to have_content '10 Students'
+        expect(page.find('.stat-display')).to have_content '20 Students'
       end
 
       # TODO: Test somewhere that has access to the request.
@@ -140,7 +140,7 @@ describe 'campaign overview page', type: :feature, js: true do
       create(:campaigns_user, user_id: user.id, campaign_id: campaign.id,
                               role: CampaignsUsers::Roles::ORGANIZER_ROLE)
       login_as(user, scope: :user)
-      visit "/campaigns/#{campaign.slug}"
+      visit "/campaigns/#{campaign.slug}/edit"
     end
 
     describe 'campaign description' do
@@ -203,7 +203,7 @@ describe 'campaign overview page', type: :feature, js: true do
           find('#campaign_end', visible: true) # field with the error should be visible
         end
 
-        it "updates the date fields properly, and to nil if the 'Use start and end dates' become unchecked" do
+        it 'updates the date fields properly, and unsets if #use_dates is unchecked' do
           find('.campaign-details .rails_editable-edit').click
           find('#use_dates').click
           fill_in('campaign_start', with: '2016-01-10')
@@ -211,11 +211,12 @@ describe 'campaign overview page', type: :feature, js: true do
           find('.campaign-details .rails_editable-save').click
           expect(campaign.reload.start).to eq(DateTime.civil(2016, 1, 10, 0, 0, 0))
           expect(campaign.end).to eq(DateTime.civil(2016, 2, 10, 23, 59, 59))
+          click_button 'Edit'
           find('.campaign-details .rails_editable-edit').click
           find('#use_dates').click # uncheck
           find('#campaign_start', visible: false)
           find('.campaign-details .rails_editable-save').click
-          find('#campaign_start', visible: false)
+          find('.campaign-start', visible: false)
           expect(campaign.reload.start).to be_nil
           expect(campaign.end).to be_nil
         end

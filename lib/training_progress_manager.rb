@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require "#{Rails.root}/lib/training_module_due_date_manager"
 
 class TrainingProgressManager
@@ -6,11 +7,12 @@ class TrainingProgressManager
     @user = user
     @training_module = training_module
     @slide = slide
-    @tmu = TrainingModulesUsers.find_by(
-      user_id: @user.id,
-      training_module_id: @training_module&.id
-    ) if @user.present?
+    if @user.present?
+      @tmu = TrainingModulesUsers.find_by(user_id: @user.id,
+                                          training_module_id: @training_module&.id)
+    end
     @due_date_manager = due_date_manager
+    @overall_due_date = @due_date_manager.overall_due_date
   end
 
   def slide_completed?
@@ -39,7 +41,7 @@ class TrainingProgressManager
   # where modules could belong to any number of courses
   def assignment_status_css_class
     return 'completed' if module_completed?
-    overall_due_date.present? && overall_due_date < Time.zone.today ? 'overdue' : nil
+    @overall_due_date.present? && @overall_due_date < Time.zone.today ? 'overdue' : nil
   end
   alias assignment_deadline_status assignment_status_css_class
 
@@ -53,7 +55,7 @@ class TrainingProgressManager
   # This is shown for the logged in user where the module is listed
   def assignment_status
     if @due_date_manager.blocks_with_module_assigned(@training_module).any?
-      parenthetical = "due #{overall_due_date}"
+      parenthetical = "due #{@overall_due_date}"
       return "Training Assignment (#{module_completed? ? 'completed' : parenthetical})"
     end
     return 'Completed' if module_completed?
@@ -73,10 +75,6 @@ class TrainingProgressManager
   end
 
   private
-
-  def overall_due_date
-    @due_date_manager.overall_due_date
-  end
 
   def due_date_manager
     TrainingModuleDueDateManager.new(course: nil, training_module: @training_module, user: @user)
